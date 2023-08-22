@@ -1,0 +1,72 @@
+body {
+   background: lightblue;
+}
+
+.row {
+   margin: 0 auto;
+}
+
+.new-day, .work-h1 {
+   text-align: center;
+}
+
+.form-control {
+   background: rgb(187, 187, 224);
+   border-color: rgb(187, 187, 224);
+   margin: 0 auto;
+   border: 1px black;
+   box-shadow: 1px 2px black s;
+}
+
+.col-lg-6 {
+   max-width: 80%;
+   margin: 1rem auto;
+}
+
+.row {
+   margin-bottom: 3rem;
+}
+
+ul {
+   margin-bottom: 3rem;
+}
+
+.list-group {
+   margin-top: 3rem;
+}
+
+.form-container{
+   margin: 0 auto;
+}
+
+.btn {
+   background: palevioletred;
+   border-color: palevioletred;
+}
+
+.nav-link, .nav-item, .navbar-brand, .navbar-toggler, .navbar-toggler-icon, span {
+   color: black;
+}
+
+ .navbar-toggler-icon{
+   color: red;
+   width: 50%;
+}
+
+#tap {
+   display: flex;
+   width: 100%;
+   margin: 0 auto;
+}
+
+p {
+   text-decoration: none;
+}
+
+.strikethrough:checked {
+   text-decoration:line-through
+ }
+
+ input[type="checkbox"]:checked {
+   text-decoration: line-through;
+}
