@@ -3,11 +3,11 @@
 <h1 class="work-h1">Tasks for today</h1>
 
 <ul class="list-group col-lg-6">
-   <% for (todo of todos) { %>
+   <% for (let i=0; i<newListItems.length; i++) { %>
       <li class="list-group-item list-group-item-action">
          <div class="form-check">
             <input class="form-check-input" type="checkbox" value="onclick" id="checkbox">
-            <p> <%= todo.text %> </p>
+            <p> <%= newListItems[i].name %> </p>
          </div>
       </li>
    <% } %>
