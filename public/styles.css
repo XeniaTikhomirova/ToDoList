@@ -6,9 +6,13 @@ body {
    margin: 0 auto;
 }
 
-.new-day, .work-h1 {
+.new-day, .work-h1, h3, h1, p {
    text-align: center;
 }
+
+/*form.item {
+
+}*/
 
 .form-control {
    background: rgb(187, 187, 224);
@@ -67,6 +71,7 @@ p {
    text-decoration:line-through
  }
 
- input[type="checkbox"]:checked {
+ input[type=checkbox]:checked + label {
+   color: red;
    text-decoration: line-through;
 }
