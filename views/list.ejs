@@ -1,0 +1,56 @@
+<%- include("partials/header.ejs") %>
+
+<body>
+   <div class="row">
+      <div class="col-lg-6">
+         <h1 class="new-day">
+
+         <h1><%= listTitle%></h1>
+
+            <p><% let today = new Date()%> 
+            <% let options = { weekday:"long", year:"numeric", month:"long", day: "long"} %>
+            <% let todayDay = today.getDay()%>
+            <%= today.toDateString('en-us', options)%>
+            </p>
+            <h3>What is your plan for today?</h3>
+
+
+         </h1>
+
+         <ul class="list-group">
+               <% for (i=0; i<newListItems.length; i++) { %>
+
+                  <form class="item" action="/delete" method="post">
+
+                  <li class="list-group-item list-group-item-action">
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkbox" value="<%=newListItems[i]._id%>" name="checkbox" onChange="this.form.submit()"><label for="cbox">
+                        <p> <%= newListItems[i].name %> </p>
+                     </div>
+                     <input type="hidden" name="listName" value="<%= listTitle %>">
+                     </input>
+                  </li>
+
+                  </form>
+               <% } %>
+         </ul>
+
+      <div class="form-container">
+
+         <form class="form-group from-control form-inline form-control-lg" id="tap" action="/" method="post">
+            <div class="col">
+            <input type="text" name="newItem" class="form-control strikethrough" id="myInput" autocomplete="off" placeholder="Tap a new task" required>
+            </div>
+            <button type="submit" name="list" value="<%= listTitle %>" class="btn btn-primary mb-2">Add</button>
+         </form>
+      </div>
+
+      </div>
+   </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="index.ejs" type="text/javascript" charset="UTF-8"></script>
+<script src="index.js" type="text/javascript" charset="UTF-8"></script>
+
+</body>
+</html>
