@@ -1,49 +1,130 @@
 import express from "express";
 import bodyParser from "body-parser";
-import dayjs from 'dayjs'
-import superheroes from "superheroes";
-
-import { dirname } from "path"
-import { fileURLToPath } from "url"
-//import jquery from "jquery";
-//import  jsdom from 'jsdom'
+import mongoose from "mongoose";
+import * as _ from 'lodash';
 
 const app = express();
+app.set('view engine', 'ejs');
 const port = 3000;
-const todos = [];
-//let name = superheroes.random();
-const __dir = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
 
-//function checkFunc(req, res, next) {
-//   const input = document.getElementById("checkbox")
-//   if (input.checked) {
-//      input.style.textDecoration = "line-through";
-//   }
-//   next()
-//}
-//app.use(checkFunc)
+mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true})
+
+const items = ["Buy Food", "Cook Food", "Eat Food"];
+const workItems = [];
+
+const itemsSchema = {
+   name: String
+ };
+
+ const Item = mongoose.model ("Item", itemsSchema);
+
+ const item1 = new Item ({
+   name: "Eat"
+})
+const item2 = new Item ({
+   name: "Sleep"
+})
+const item3 = new Item ({
+   name: "Repeat"
+});
+
+const defaultsItems = [item1, item2, item3];
+
+const listSchema = {
+   name: String,
+   items: [itemsSchema]
+}
+
+const List = mongoose.model("List", listSchema)
 
 app.get("/", (req, res) => {
-   res.render("index.ejs", {todos: todos});
-});
+   Item.find({})
+     .then(function(foundItems){
+      if (foundItems.length  === 0) {
+         Item.insertMany(defaultsItems)
+         .then(function(item){
+         console.log("Succeded!")
+         })
+         .catch(function(err){
+         console.log(err)
+         })
+         res.redirect("/")
+      } else {
+         res.render("list", {listTitle: "Today", newListItems: foundItems});
+      }
+   })
+   .catch(function(err){
+      console.log(err)
+   })
+   });
+
+app.get("/:customListName", (req, res) => {
+   const customListName = req.params.customListName.toUpperCase();
+   List.findOne({name: customListName})
+   .then(function(foundList) {
+      if (!foundList) {
+         const list = new List ({
+               name: customListName,
+               items: defaultsItems
+            })
+            list.save();
+            res.redirect("/" + customListName)
+         } else {
+            res.render("list", {listTitle: foundList.name, newListItems: foundList.items})
+         }
+      })
+   })
 
 app.post("/", (req, res) => {
-   todos.push(req.body)
-   res.redirect("/")
+   const itemName = req.body.newItem;
+   const listName = req.body.list;
+
+   const item = new Item ({
+      name: itemName
+   })
+   
+   if (listName === "Today") {
+      item.save();
+      res.redirect("/");
+   } else {
+      List.findOne({name: listName})
+      .then(function(foundList){
+         foundList.items.push(item);
+         foundList.save();
+         res.redirect("/" + listName);
+      })
+   }
 })
 
-app.get("/work", (req, res) => {
-   res.render("work.ejs", {todos: todos});
-});
+app.post("/delete", (req, res) => {
+  const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
 
-app.post("/work", (req, res) => {
-   todos.push(req.body)
-   res.redirect("/")
-});
+  if (listName === "Today") {
+   Item.findByIdAndRemove(checkedItemId)
+   .then(function(items) {
+      console.log("Succsessfully deleted!!")
+      res.redirect("/")
+   })
+   .catch(function(err){
+      console.log(err)
+   })
+  } else {
+      List.findOneAndUpdate(
+         {name: listName},
+         {$pull: {items: {_id: checkedItemId }}}
+      )
+      .then(function(foundList){
+         res.redirect("/" + listName);
+      })
+      .catch(function(err){
+         console.log(err)
+      })
+  }
+})
 
 app.listen(3000, () => {
    console.log(`Listening on port ${port}`);
