@@ -5,12 +5,12 @@ import * as _ from 'lodash';
 
 const app = express();
 app.set('view engine', 'ejs');
-const port = 3000;
+//const port = 3000;
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true})
+mongoose.connect("mongodb+srv://admin-kseniia:testkseniia@cluster0.duxh12h.mongodb.net/todolistDB", {useNewUrlParser: true})
 
 const items = ["Buy Food", "Cook Food", "Eat Food"];
 const workItems = [];
@@ -126,6 +126,12 @@ app.post("/delete", (req, res) => {
   }
 })
 
-app.listen(3000, () => {
-   console.log(`Listening on port ${port}`);
+const port = process.env.PORT;
+if (port == null || port == "") {
+   port = 3000;
+}
+app.listen(port)
+
+app.listen(port, () => {
+   console.log(`Server has started`);
 })
