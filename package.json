@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-  },
+   "test": "echo \"Error: no test specified\" && exit 1",
+   "start": "node build/app.js",
+   "another-script": "you get the idea"
+    },
   "author": "Kseniia",
   "license": "ISC",
   "engines": {
