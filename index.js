@@ -130,7 +130,6 @@ const port = process.env.PORT;
 if (port == null || port == "") {
    port = 4356;
 }
-app.listen(port)
 
 app.listen(port, () => {
    console.log(`Server has started`);
