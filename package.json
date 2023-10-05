@@ -9,6 +9,9 @@
   },
   "author": "Kseniia",
   "license": "ISC",
+  "engines": {
+   "node": "20.8.0"
+  },
   "dependencies": {
     "bootstrap": "^5.3.1",
     "dayjs": "^1.11.9",
